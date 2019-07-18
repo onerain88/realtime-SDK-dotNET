@@ -131,7 +131,7 @@ namespace LeanCloud.Realtime
         /// <param name="msgStr">Message string.</param>
         public override IAVIMMessage Deserialize(string msgStr)
         {
-            var msg = Json.Parse(msgStr) as IDictionary<string, object>;
+            var msg = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(msgStr, new JsonIntegerConverter());
             var fileData = msg[AVIMProtocol.LCFILE] as IDictionary<string, object>;
             string mimeType = null;
             string url = null;
@@ -235,7 +235,7 @@ namespace LeanCloud.Realtime
         /// <param name="msgStr">Message string.</param>
         public override IAVIMMessage Deserialize(string msgStr)
         {
-            var msg = Json.Parse(msgStr) as IDictionary<string, object>;
+            var msg = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(msgStr, new JsonIntegerConverter());
             var locationData = msg[AVIMProtocol.LCLOC] as IDictionary<string, object>;
             if (locationData != null)
             {

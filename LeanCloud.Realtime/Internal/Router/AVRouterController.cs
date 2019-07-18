@@ -136,7 +136,7 @@ namespace LeanCloud.Realtime.Internal
                     {
                         var result = t.Result.Item2;
 
-                        var routerState = Json.Parse(result) as IDictionary<string, object>;
+                        var routerState = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(result, new JsonIntegerConverter());
                         if (routerState.Keys.Count == 0)
                         {
                             throw new KeyNotFoundException("Can not get websocket url from server,please check the appId.");

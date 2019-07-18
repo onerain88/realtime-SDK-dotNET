@@ -8,8 +8,10 @@ using LeanCloud.Realtime;
 namespace Test.Portable {
     [TestFixture]
     public class MessageTest {
-        [Test]
+        [Test, Timeout(5000)]
         public async Task ModifyMessage() {
+            AVRealtime.WebSocketLog(Console.WriteLine);
+
             var mre = new ManualResetEvent(false);
             string msgId = null;
             var r = Utils.NewRealtime();
@@ -25,8 +27,10 @@ namespace Test.Portable {
             msgId = msg.Id;
         }
 
-        [Test]
+        [Test, Timeout(5000)]
         public async Task CustomAttr() {
+            AVRealtime.WebSocketLog(Console.WriteLine);
+
             var mre = new ManualResetEvent(false);
             var r0 = Utils.NewRealtime();
             var c0 = await r0.CreateClientAsync("mt1_c0");
@@ -46,7 +50,11 @@ namespace Test.Portable {
             var conv = await c0.CreateConversationAsync(new List<string> { "mt1_c1" });
             var msg = new AVIMTextMessage("the message with custom attributes");
             msg["hello"] = "world";
-            await conv.SendMessageAsync(msg);
+            try {
+                await conv.SendMessageAsync(msg);
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
             mre.WaitOne();
         }
     }

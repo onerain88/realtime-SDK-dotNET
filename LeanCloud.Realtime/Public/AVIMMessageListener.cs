@@ -115,7 +115,7 @@ namespace LeanCloud.Realtime
             if (notice.CommandName != "direct") return false;
             try
             {
-                var msg = Json.Parse(notice.RawData["msg"].ToString()) as IDictionary<string, object>;
+                var msg = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(notice.RawData["msg"].ToString(), new JsonIntegerConverter());
                 if (!msg.Keys.Contains(AVIMProtocol.LCTYPE)) return false;
                 var typInt = 0;
                 int.TryParse(msg[AVIMProtocol.LCTYPE].ToString(), out typInt);

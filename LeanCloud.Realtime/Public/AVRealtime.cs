@@ -344,7 +344,7 @@ namespace LeanCloud.Realtime
         {
             try
             {
-                var estimatedData = Json.Parse(obj) as IDictionary<string, object>;
+                var estimatedData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(obj, new JsonIntegerConverter());
                 var validator = AVIMNotice.IsValidLeanCloudProtocol(estimatedData);
                 if (validator)
                 {
@@ -364,6 +364,7 @@ namespace LeanCloud.Realtime
                 }
 
                 PrintLog(ex.Message);
+                PrintLog(ex.StackTrace);
             }
         }
 

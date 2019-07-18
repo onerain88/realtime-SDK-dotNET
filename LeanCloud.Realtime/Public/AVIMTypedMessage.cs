@@ -41,7 +41,7 @@ namespace LeanCloud.Realtime
         public override string Serialize()
         {
             var result = Encode();
-            var resultStr = Json.Encode(result);
+            var resultStr = Newtonsoft.Json.JsonConvert.SerializeObject(result);
             this.Content = resultStr;
             return resultStr;
         }
@@ -67,7 +67,7 @@ namespace LeanCloud.Realtime
         {
             try
             {
-                var msg = Json.Parse(msgStr) as IDictionary<string, object>;
+                var msg = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(msgStr, new JsonIntegerConverter());
                 return msg.ContainsKey(AVIMProtocol.LCTYPE);
             }
             catch
@@ -84,7 +84,7 @@ namespace LeanCloud.Realtime
         /// <param name="msgStr">Message string.</param>
         public override IAVIMMessage Deserialize(string msgStr)
         {
-            var msg = Json.Parse(msgStr) as IDictionary<string, object>;
+            var msg = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(msgStr, new JsonIntegerConverter());
             var className = AVRealtime.FreeStyleMessageClassingController.GetClassName(this.GetType());
             var PropertyMappings = AVRealtime.FreeStyleMessageClassingController.GetPropertyMappings(className);
             var messageFieldProperties = PropertyMappings.Where(prop => msg.ContainsKey(prop.Value))
@@ -97,8 +97,8 @@ namespace LeanCloud.Realtime
 
             if (msg.ContainsKey(AVIMProtocol.LCATTRS))
             {
-                object attrs = msg[AVIMProtocol.LCATTRS];
-                this.estimatedData = AVDecoder.Instance.Decode(attrs) as Dictionary<string, object>;
+                var attrs = msg[AVIMProtocol.LCATTRS] as Newtonsoft.Json.Linq.JObject;
+                this.estimatedData = attrs.ToObject<Dictionary<string, object>>();
             }
 
             return base.Deserialize(msgStr);

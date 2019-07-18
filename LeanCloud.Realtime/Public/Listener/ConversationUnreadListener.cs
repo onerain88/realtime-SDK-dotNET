@@ -102,7 +102,8 @@ namespace LeanCloud.Realtime
             {
                 if (notice.RawData.ContainsKey("convs"))
                 {
-                    var unreadRawData = notice.RawData["convs"] as List<object>;
+                    var unreadJson = notice.RawData["convs"] as Newtonsoft.Json.Linq.JArray;
+                    var unreadRawData = unreadJson.ToList<object>();
                     if (notice.RawData.ContainsKey("notifTime"))
                     {
                         long.TryParse(notice.RawData["notifTime"].ToString(), out NotifTime);

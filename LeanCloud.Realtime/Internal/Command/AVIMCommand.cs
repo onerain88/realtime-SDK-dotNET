@@ -144,7 +144,7 @@ namespace LeanCloud.Realtime.Internal
         public virtual string EncodeJsonString()
         {
             var json = this.Encode();
-            return Json.Encode(json);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         public bool IsValid

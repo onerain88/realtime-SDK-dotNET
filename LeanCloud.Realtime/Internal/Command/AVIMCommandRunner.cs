@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace LeanCloud.Realtime.Internal
 {
@@ -51,7 +52,7 @@ namespace LeanCloud.Realtime.Internal
             onMessage = (response) =>
             {
                 //AVRealtime.PrintLog("response<=" + response);
-                var responseJson = Json.Parse(response) as IDictionary<string, object>;
+                var responseJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(response, new JsonIntegerConverter());
                 if (responseJson.Keys.Contains("i"))
                 {
                     if (requestJson["i"].ToString() == responseJson["i"].ToString())

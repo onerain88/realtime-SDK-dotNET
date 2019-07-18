@@ -33,7 +33,7 @@ namespace LeanCloud.Realtime.Internal
             {
                 try
                 {
-                    var msgDic = Json.Parse(msgStr) as IDictionary<string, object>;
+                    var msgDic = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(msgStr, new JsonIntegerConverter());
                     if (msgDic != null)
                     {
                         if (msgDic.ContainsKey(AVIMProtocol.LCTYPE))
